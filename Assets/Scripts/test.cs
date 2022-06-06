@@ -1,3 +1,5 @@
+#pragma warning disable
+
 using UnityEngine;
 
 public class test : MonoBehaviour

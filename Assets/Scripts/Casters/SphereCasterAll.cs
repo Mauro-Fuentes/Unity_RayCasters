@@ -41,7 +41,6 @@ public class SphereCasterAll : MonoBehaviour
                 Gizmos.color = Color.blue;
                 Gizmos.DrawRay(from: r.transform.position, direction: r.normal);
             }
-
         }
 
         else

@@ -4,52 +4,77 @@ using UnityEditor;
 public class BoxCasterAll : MonoBehaviour
 {
     public float maxDistance = 5f;
+    
     public bool activateDebug;
 
-    private RaycastHit[] hits;
-    private bool somethingWasHit;
-    private Color greenColor = Color.green;
-    private Color redColor = Color.red;
+    public RaycastHit[] hits;
 
-    private void Start()
-    {
+    private Color colorNoTarget = Color.green;
+    private Color colorTargetAquired = Color.red;
 
-    }
+    private float timeLeft;
 
     private void OnDrawGizmos()
     {
-        hits = Physics.BoxCastAll
-            (
-                center: transform.position,
-                halfExtents: transform.lossyScale / 2,
-                direction: transform.forward,
-                orientation: transform.rotation,
-                maxDistance: maxDistance
-            );
+        PerformCast();
 
-        if(hits.Length > 1) // remember that the creation of the array is at least [0] (not empty)
+        if (hits.Length > 0)
         {
-            Gizmos.color = redColor;
-            Gizmos.DrawRay(from: transform.position, direction: transform.forward * maxDistance);
-            Gizmos.DrawWireCube(transform.position + transform.forward * maxDistance, transform.lossyScale);
+            Bounds b = new Bounds(hits[0].transform.position, hits[0].transform.localScale);
 
-            //Debug.Log(hits.Length - 1 + " object/s caught. ");
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireCube(transform.position + transform.forward * timeLeft, transform.lossyScale);
+
+            Gizmos.color = colorTargetAquired;
+            Gizmos.DrawWireCube(transform.position + transform.forward * maxDistance, transform.lossyScale);
 
             foreach (RaycastHit r in hits)
             {
-                if(activateDebug)
-                Handles.Label(r.transform.position + transform.up * 1.2f, r.distance.ToString());
+                if (activateDebug)
+                {
+                    Handles.color = colorTargetAquired;
+                    Handles.Label(r.transform.position + transform.up * 1.5f, r.transform.name.ToString());
+                }
 
                 Gizmos.color = Color.blue;
                 Gizmos.DrawRay(from: r.transform.position, direction: r.normal);
+
+                b.Encapsulate(r.transform.position);
             }
-            
+
+            Handles.DrawWireCube(b.center, b.size);
         }
 
         else
         {
-            Gizmos.color = greenColor;
-            Gizmos.DrawRay(from: transform.position, direction: transform.forward * (maxDistance + transform.lossyScale.z / 2));
+            Gizmos.color = colorNoTarget;
+            Gizmos.DrawWireCube(transform.position + transform.forward * timeLeft, transform.lossyScale);
         }
+
+        CalculateTimeLeftToDistance();
+
+        AddTime();
+    }
+
+    private void PerformCast()
+    {
+        hits = Physics.BoxCastAll
+        (
+            center: transform.position,
+            halfExtents: transform.lossyScale / 2,
+            direction: transform.forward,
+            orientation: transform.rotation,
+            maxDistance: maxDistance
+        );
+    }
+
+    private void CalculateTimeLeftToDistance()
+    {
+        if (timeLeft >= maxDistance) timeLeft = 0f;
+    }
+
+    private void AddTime()
+    {
+        timeLeft += 0.1f;
     }
 }

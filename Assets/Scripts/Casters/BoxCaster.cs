@@ -6,37 +6,65 @@ public class BoxCaster : MonoBehaviour
 
     private RaycastHit hit;
     private bool somethingWasHit;
-    private Color greenColor = Color.green;
-    private Color redColor = Color.red;
 
-    private void Start()
-    {
+    private Color colorNoTarget = Color.green;
+    private Color colorTargetAquired = Color.red;
 
-    }
+    private float timeLeft;
 
     private void OnDrawGizmos()
     {
-        somethingWasHit = Physics.BoxCast
-            (
-                center: transform.position,
-                halfExtents: transform.lossyScale / 2,
-                direction: transform.forward,
-                hitInfo: out hit,
-                orientation: transform.rotation,
-                maxDistance: maxDistance
-            );
+        PerformCast();
 
         if (somethingWasHit)
         {
-            Gizmos.color = redColor;
-            Gizmos.DrawRay(from: transform.position, direction: transform.forward * hit.distance);
-            Gizmos.DrawWireCube(transform.position + transform.forward * hit.distance, transform.lossyScale); 
+            CalculateTimeleftToHit();
+
+            Gizmos.color = colorTargetAquired;
+            Gizmos.DrawWireCube(transform.position + transform.forward * hit.distance, transform.lossyScale);
+
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireCube(transform.position + transform.forward * timeLeft, transform.lossyScale);
         }
 
         else
         {
-            Gizmos.color = greenColor;
-            Gizmos.DrawRay(from: transform.position, direction: transform.forward * (maxDistance + transform.lossyScale.z/2));
+            CalculateTimeLeftToDistance();
+
+            Gizmos.color = colorNoTarget;
+            Gizmos.DrawWireCube(transform.position + transform.forward * timeLeft, transform.lossyScale);
         }
+
+        AddTime();
+
     }
+
+    private void PerformCast()
+    {
+        somethingWasHit = Physics.BoxCast
+        (
+            center: transform.position,
+            halfExtents: transform.lossyScale / 2,
+            direction: transform.forward,
+            hitInfo: out hit,
+            orientation: transform.rotation,
+            maxDistance: maxDistance
+        );
+    }
+
+    private void CalculateTimeLeftToDistance()
+    {
+        if (timeLeft >= maxDistance) timeLeft = 0f;
+    }
+
+    private void CalculateTimeleftToHit()
+    {
+        if (timeLeft >= hit.distance) timeLeft = 0f;
+    }
+
+    private void AddTime()
+    {
+        timeLeft += 0.1f;
+    }
+
 }
