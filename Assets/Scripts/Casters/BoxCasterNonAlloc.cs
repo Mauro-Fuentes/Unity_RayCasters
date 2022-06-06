@@ -13,7 +13,6 @@ public class BoxCasterNonAlloc: MonoBehaviour
     private Color greenColor = Color.green;
     private Color redColor = Color.red;
 
-    //RaycastHit[] hits = new RaycastHit[5];
     RaycastHit[] hits;
 
     private float timeLeft;
@@ -32,8 +31,6 @@ public class BoxCasterNonAlloc: MonoBehaviour
             CalculateTimeleftToHit();
 
             Gizmos.color = redColor;
-
-            //Gizmos.DrawWireCube(transform.position + transform.forward * maxDistance, transform.lossyScale);
             Gizmos.DrawWireCube(transform.position + transform.forward * timeLeft, transform.lossyScale);
 
             for (int index = 0; index < numberOfHits; index++)
@@ -42,8 +39,6 @@ public class BoxCasterNonAlloc: MonoBehaviour
 
                 if (debug)
                     Debug.Log(hits[index].transform.name);
-
-                //Gizmos.DrawRay(from: hits[index].transform.position, direction: hits[index].normal);
             }
         }
 
@@ -51,10 +46,7 @@ public class BoxCasterNonAlloc: MonoBehaviour
         {
             CalculateTimeLeftToDistance();
             Gizmos.color = greenColor;
-
             Gizmos.DrawWireCube(transform.position + transform.forward * timeLeft, transform.lossyScale);
-
-            //Gizmos.DrawRay(from: transform.position, direction: transform.forward * (maxDistance + transform.lossyScale.z / 2));
         }
 
         AddTime();

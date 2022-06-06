@@ -36,7 +36,6 @@ public class BoxCaster : MonoBehaviour
         }
 
         AddTime();
-
     }
 
     private void PerformCast()

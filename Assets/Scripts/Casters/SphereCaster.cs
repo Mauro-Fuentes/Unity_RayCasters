@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class SphereCaster : MonoBehaviour
@@ -7,36 +8,62 @@ public class SphereCaster : MonoBehaviour
 
     private RaycastHit hit;
     private bool somethingWasHit;
+
     private Color greenColor = Color.green;
     private Color redColor = Color.red;
 
-    private void Start()
-    {
-
-    }
+    private float timeLeft;
 
     private void OnDrawGizmos()
     {
-        somethingWasHit = Physics.SphereCast
-            (
-                origin: transform.position,
-                radius: radius,
-                direction: transform.forward,
-                hitInfo: out hit,
-                maxDistance: maxDistance 
-            );
+        PerformCast();
 
         if (somethingWasHit)
         {
+            CalculateTimeleftToHit();
+
             Gizmos.color = redColor;
-            Gizmos.DrawRay(from: transform.position, direction: transform.forward * hit.distance);
-            Gizmos.DrawSphere(transform.position + transform.forward * hit.distance, radius);
+            Gizmos.DrawWireSphere(transform.position + transform.forward * hit.distance, radius);
+
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireSphere(transform.position + transform.forward * timeLeft, radius);
         }
 
         else
         {
-            Gizmos.color = greenColor;
-            Gizmos.DrawRay(from: transform.position, direction: transform.forward * (maxDistance + transform.lossyScale.z / 2));
+            CalculateTimeLeftToDistance();
+
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireSphere(transform.position + transform.forward * timeLeft, radius);
         }
+
+        AddTime();
+    }
+
+    private void PerformCast()
+    {
+        somethingWasHit = Physics.SphereCast
+        (
+            origin: transform.position,
+            radius: radius,
+            direction: transform.forward,
+            hitInfo: out hit,
+            maxDistance: maxDistance
+        );
+    }
+
+    private void CalculateTimeLeftToDistance()
+    {
+        if (timeLeft >= maxDistance) timeLeft = 0f;
+    }
+
+    private void CalculateTimeleftToHit()
+    {
+        if (timeLeft >= hit.distance) timeLeft = 0f;
+    }
+
+    private void AddTime()
+    {
+        timeLeft += 0.1f;
     }
 }

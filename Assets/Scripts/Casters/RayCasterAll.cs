@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RayCaster : MonoBehaviour
+public class RayCasterAll : MonoBehaviour
 {
     public float maxDistance;
     private RaycastHit hit;
@@ -39,7 +39,7 @@ public class RayCaster : MonoBehaviour
 
     private void PerformCast()
     {
-        somethingWasHit = Physics.Raycast
+        somethingWasHit = Physics.RaycastAll
         (
             origin: transform.position,
             direction: transform.forward,

@@ -1,7 +1,8 @@
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 
-public class SphereCasterAll : MonoBehaviour
+[ExecuteInEditMode]
+public class SphereCasterNonAlloc : MonoBehaviour
 {
     public float maxDistance = 5f;
     public float radius;
@@ -10,10 +11,17 @@ public class SphereCasterAll : MonoBehaviour
     private RaycastHit[] hits;
     private bool somethingWasHit;
 
+    public int numberOfHits;
+
     private Color greenColor = Color.green;
     private Color redColor = Color.red;
 
     private float timeLeft;
+
+    private void OnEnable()
+    {
+        hits = new RaycastHit[5];
+    }
 
     private void OnDrawGizmos()
     {
@@ -23,15 +31,23 @@ public class SphereCasterAll : MonoBehaviour
         {
             CalculateTimeleftToHit();
 
+            for (int index = 0; index < numberOfHits; index++)
+            {
+                Gizmos.color = Color.blue;
+
+                if (activateDebug)
+                     Handles.Label(hits[index].transform.position + transform.up * 2f, hits[index].transform.name.ToString());
+            }
+
             foreach (RaycastHit r in hits)
             {
                 if (activateDebug)
                 {
-                    Handles.Label(r.transform.position + transform.up * 2f, r.transform.name.ToString());
+                    //Handles.Label(r.transform.position + transform.up * 2f, r.transform.name.ToString());
                 }
 
                 Gizmos.color = Color.blue;
-                Gizmos.DrawRay(from: r.point , direction: r.normal);
+                Gizmos.DrawRay(from: r.point, direction: r.normal);
             }
 
             Gizmos.color = redColor;
@@ -54,12 +70,13 @@ public class SphereCasterAll : MonoBehaviour
 
     private void PerformCast()
     {
-        hits = Physics.SphereCastAll
+        numberOfHits = Physics.SphereCastNonAlloc
         (
             origin: transform.position,
             radius: radius,
             direction: transform.forward,
-            maxDistance: maxDistance
+            maxDistance: maxDistance,
+            results: hits
         );
     }
 

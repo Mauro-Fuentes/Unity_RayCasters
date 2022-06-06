@@ -33,7 +33,7 @@ public class BoxCasterAll : MonoBehaviour
                 if (activateDebug)
                 {
                     Handles.color = colorTargetAquired;
-                    Handles.Label(r.transform.position + transform.up * 1.5f, r.transform.name.ToString());
+                    Handles.Label(r.point + transform.up * 1.5f, r.transform.name.ToString());
                 }
 
                 Gizmos.color = Color.blue;
