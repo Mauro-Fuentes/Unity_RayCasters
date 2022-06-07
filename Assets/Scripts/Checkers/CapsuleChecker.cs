@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-public class SphereChecker : MonoBehaviour
+public class CapsuleChecker : MonoBehaviour
 {
     public float radius;
 
@@ -32,10 +32,11 @@ public class SphereChecker : MonoBehaviour
 
     private void PerfomCast()
     {
-        somethingWasHit = Physics.CheckSphere
-        (
-            position: transform.position + transform.forward * maxDistance,
-            radius: radius
-        );
+        //somethingWasHit = Physics.CheckCapsule
+        //(
+
+        //    //position: transform.position + transform.forward * maxDistance,
+        //    //radius: radius
+        //);
     }
 }

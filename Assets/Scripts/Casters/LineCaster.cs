@@ -19,7 +19,7 @@ public class LineCaster : MonoBehaviour
         PerformCast();
 
         Gizmos.color = greenColor;
-        Gizmos.DrawRay(from: transform.position, direction: transform.forward * distance);
+        Gizmos.DrawRay(from: transform.position + transform.forward * 1.2f, direction: transform.forward * distance);
 
         if (somethingWasHit)
         {
@@ -38,7 +38,7 @@ public class LineCaster : MonoBehaviour
     {
         somethingWasHit = Physics.Linecast
         (
-            start: transform.position,
+            start: transform.position + transform.forward * 1.2f,
             end: transform.position + transform.forward * distance,
             hitInfo: out hit
         );

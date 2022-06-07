@@ -1,12 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class RayCasterAll : MonoBehaviour
 {
     public float maxDistance;
     private RaycastHit hit;
-    private bool somethingWasHit;
+
+    public RaycastHit[] hits;
 
     private Color greenColor = Color.green;
     private Color redColor = Color.red;
@@ -17,21 +17,22 @@ public class RayCasterAll : MonoBehaviour
     {
         PerformCast();
 
-        if (somethingWasHit)
+        CalculateTimeLeftToDistance();
+
+        Gizmos.color = greenColor;
+        Gizmos.DrawRay(from: transform.position, direction: transform.forward * timeLeft);
+
+        if (hits.Length > 0)
         {
-            CalculateTimeleftToHit();
+            //CalculateTimeleftToHit();
 
-            Gizmos.color = redColor;
-            Gizmos.DrawRay(from: transform.position, direction: transform.forward * timeLeft);
-            Gizmos.DrawWireCube(transform.position + transform.forward * hit.distance, transform.lossyScale);
-        }
+            for (int i = 0; i < hits.Length; i++)
+            {
+                Gizmos.color = Color.blue;
+                Gizmos.DrawSphere(hits[i].point, 0.2f);
 
-        else
-        {
-            CalculateTimeLeftToDistance();
-
-            Gizmos.color = greenColor;
-            Gizmos.DrawRay(from: transform.position, direction: transform.forward * timeLeft);
+                Handles.Label(hits[i].point + transform.up * 1.5f, hits[i].transform.name.ToString());
+            }
         }
 
         AddTime();
@@ -39,15 +40,13 @@ public class RayCasterAll : MonoBehaviour
 
     private void PerformCast()
     {
-        somethingWasHit = Physics.RaycastAll
+        hits = Physics.RaycastAll
         (
             origin: transform.position,
             direction: transform.forward,
-            hitInfo: out hit,
             maxDistance: maxDistance
         );
     }
-
 
     private void CalculateTimeLeftToDistance()
     {

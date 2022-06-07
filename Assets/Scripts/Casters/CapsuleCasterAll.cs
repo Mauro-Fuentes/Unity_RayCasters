@@ -1,12 +1,13 @@
-using UnityEditor;
 using UnityEngine;
 
-public class CapsuleCaster : MonoBehaviour
+public class CapsuleCasterAll : MonoBehaviour
 {
     public Transform sphere1;
     public Transform sphere2;
     public float maxDistance = 5f;
     public float radius;
+
+    public RaycastHit[] hits;
 
     private bool somethingWasHit;
     private Color greenColor = Color.green;
@@ -17,11 +18,6 @@ public class CapsuleCaster : MonoBehaviour
     public Mesh capsule1;
 
     private float timeLeft;
-
-    private void Start()
-    {
-
-    }
 
     private void OnDrawGizmos()
     {
@@ -46,7 +42,7 @@ public class CapsuleCaster : MonoBehaviour
 
         PerformCast();
 
-        if (somethingWasHit)
+        if (hits.Length > 0)
         {
             //Debug.Log("Hit");
 
@@ -90,22 +86,21 @@ public class CapsuleCaster : MonoBehaviour
         Gizmos.DrawWireSphere(sphere1.position + transform.forward * timeLeft, radius);
         Gizmos.DrawWireSphere(sphere2.position + transform.forward * timeLeft, radius);
 
-        var a = new Vector3(radius*2, sphere2.position.y, radius*2 );
+        var a = new Vector3(radius * 2, sphere2.position.y, radius * 2);
         var ar = Mathf.RoundToInt(sphere2.position.y);
 
-        Gizmos.DrawWireCube(transform.position + transform.forward * timeLeft, a );
+        Gizmos.DrawWireCube(transform.position + transform.forward * timeLeft, a);
     }
 
     private void PerformCast()
     {
-        somethingWasHit = Physics.CapsuleCast
+        hits = Physics.CapsuleCastAll
         (
             point1: sphere1.position,
             point2: sphere2.position,
             radius: radius,
             direction: transform.forward,
-            maxDistance: maxDistance,
-            hitInfo: out hitinfo
+            maxDistance: maxDistance
         );
     }
 
