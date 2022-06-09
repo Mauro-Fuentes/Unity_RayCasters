@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.Profiling;
 
 [ExecuteAlways]
-public class TESTCASE_BoxOverlapperNonAlloc : MonoBehaviour
+public class TESTCASE_Good_BoxOverlapperNonAlloc : MonoBehaviour
 {
     public float maxDistance = 5f;
     private Vector3 centerOfCube;
@@ -49,7 +49,7 @@ public class TESTCASE_BoxOverlapperNonAlloc : MonoBehaviour
 
         stopWatch.Start();
 
-        Profiler.BeginSample("TEST");
+        Profiler.BeginSample("TEST THE GOOD");
 
         int collidersFound = Cast();
 

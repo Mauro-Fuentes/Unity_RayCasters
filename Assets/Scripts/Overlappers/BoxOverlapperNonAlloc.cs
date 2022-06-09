@@ -4,8 +4,8 @@ public class BoxOverlapperNonAlloc : MonoBehaviour
 {
     public float maxDistance = 5f;
 
-    public Color colorNoTarget;
-    public Color colorTargetAquired;
+    private Color greenColor = Color.green;
+    private Color redColor = Color.red;
 
     public Collider[] allColliders;
 
@@ -42,8 +42,8 @@ public class BoxOverlapperNonAlloc : MonoBehaviour
 
     private void DrawLineForTarget(bool targetIsAquired)
     {
-        if (targetIsAquired) Gizmos.color = colorTargetAquired;
-        else Gizmos.color = colorNoTarget;
+        if (targetIsAquired) Gizmos.color = redColor;
+        else Gizmos.color = greenColor;
 
         Gizmos.DrawRay(from: transform.position, direction: transform.forward * maxDistance);
     }
