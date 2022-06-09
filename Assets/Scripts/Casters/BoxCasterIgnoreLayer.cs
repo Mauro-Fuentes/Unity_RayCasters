@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 
-public class BoxCaster : MonoBehaviour
+public class BoxCasterIgnoreLayer : MonoBehaviour
 {
+    public LayerMask layerMask;
+
     public float maxDistance = 5f;
 
     private RaycastHit hit;
@@ -20,19 +22,19 @@ public class BoxCaster : MonoBehaviour
         {
             CalculateTimeleftToHit();
 
-            //Gizmos.color = colorTargetAquired;
-            //Gizmos.DrawWireCube(transform.position + transform.forward * hit.distance, transform.lossyScale);
+            Gizmos.color = colorTargetAquired;
+            Gizmos.DrawWireCube(transform.position + transform.forward * hit.distance, transform.lossyScale);
 
-            //Gizmos.color = Color.white;
-            //Gizmos.DrawWireCube(transform.position + transform.forward * timeLeft, transform.lossyScale);
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireCube(transform.position + transform.forward * timeLeft, transform.lossyScale);
         }
 
         else
         {
             CalculateTimeLeftToDistance();
 
-            //Gizmos.color = colorNoTarget;
-            //Gizmos.DrawWireCube(transform.position + transform.forward * timeLeft, transform.lossyScale);
+            Gizmos.color = colorNoTarget;
+            Gizmos.DrawWireCube(transform.position + transform.forward * timeLeft, transform.lossyScale);
         }
 
         AddTime();
@@ -47,7 +49,8 @@ public class BoxCaster : MonoBehaviour
             direction: transform.forward,
             hitInfo: out hit,
             orientation: transform.rotation,
-            maxDistance: maxDistance
+            maxDistance: maxDistance,
+            layerMask: layerMask
         );
     }
 
