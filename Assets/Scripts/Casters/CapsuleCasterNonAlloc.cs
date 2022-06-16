@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class CapsuleCasterNonAlloc : MonoBehaviour
 {
     public Transform sphere1;
@@ -20,6 +19,11 @@ public class CapsuleCasterNonAlloc : MonoBehaviour
 
     private float timeLeft;
 
+    private void OnEnable()
+    {
+        hits = new RaycastHit[5];
+    }
+
     private void OnDrawGizmos()
     {
         var a = new Vector3(radius * 2, sphere2.position.y, radius * 2);
@@ -37,16 +41,10 @@ public class CapsuleCasterNonAlloc : MonoBehaviour
 
         PerformCast();
 
-        Debug.Log(hits.Length);
-
-        if(amountOfHits > 0)
-        { 
-            for (int i = 0; i < hits.Length; i++)
-            {
-                Gizmos.color = Color.blue;
-                Gizmos.DrawSphere(hits[i].point, 0.15f);
-
-            }
+        for (int i = 0; i < hits.Length; i++)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawSphere(hits[i].point, 0.15f);
         }
 
         CalculateTimeLeftToDistance();
