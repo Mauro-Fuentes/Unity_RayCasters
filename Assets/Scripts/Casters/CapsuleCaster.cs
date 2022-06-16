@@ -1,4 +1,3 @@
-using UnityEditor;
 using UnityEngine;
 
 public class CapsuleCaster : MonoBehaviour
@@ -18,28 +17,17 @@ public class CapsuleCaster : MonoBehaviour
 
     private float timeLeft;
 
-    private void Start()
-    {
-
-    }
-
     private void OnDrawGizmos()
     {
-        //Gizmos.color = greenColor;
-        //Gizmos.DrawRay(from: transform.position, direction: transform.forward * (maxDistance + transform.lossyScale.z / 2));
-
-        Gizmos.color = Color.cyan;
-
-        //DrawWithSimple();
-
         var a = new Vector3(radius * 2, sphere2.position.y, radius * 2);
         var ar = Mathf.RoundToInt(sphere2.position.y);
 
+        Gizmos.color = Color.green;
         Gizmos.DrawWireMesh
         (
             mesh: capsule1,
             submeshIndex: 0,
-            position: transform.position + transform.forward * maxDistance,
+            position: transform.position + transform.forward * timeLeft,
             rotation: transform.rotation,
             scale: a
          );
@@ -48,31 +36,10 @@ public class CapsuleCaster : MonoBehaviour
 
         if (somethingWasHit)
         {
-            //Debug.Log("Hit");
-
             Gizmos.color = Color.blue;
             Gizmos.DrawSphere(hitinfo.point, 0.2f);
-
-            //Gizmos.color = redColor;
-            //Gizmos.DrawRay(from: transform.position, direction: transform.forward * maxDistance);
-
-
-
-            //Gizmos.DrawWireMesh
-            //(
-            //    mesh: capsule1,
-            //    submeshIndex: -1,
-            //    position: transform.position + transform.forward * maxDistance,
-            //    rotation: transform.rotation,
-            //    scale: transform.lossyScale / 2
-            // );
         }
 
-        //else
-        //{
-        //    Gizmos.color = greenColor;
-        //    Gizmos.DrawRay(from: transform.position, direction: transform.forward * (maxDistance + transform.lossyScale.z / 2));
-        //}
 
         CalculateTimeLeftToDistance();
 
@@ -81,12 +48,7 @@ public class CapsuleCaster : MonoBehaviour
 
     private void DrawWithSimple()
     {
-        // Unity style draws two circles and completes with a box
-        //Staticos
-        //Gizmos.DrawWireSphere(sphere1.position, radius);
-        //Gizmos.DrawWireSphere(sphere2.position, radius);
 
-        //Movables
         Gizmos.DrawWireSphere(sphere1.position + transform.forward * timeLeft, radius);
         Gizmos.DrawWireSphere(sphere2.position + transform.forward * timeLeft, radius);
 

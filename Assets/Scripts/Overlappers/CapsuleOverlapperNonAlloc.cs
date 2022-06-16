@@ -26,9 +26,6 @@ public class CapsuleOverlapperNonAlloc : MonoBehaviour
 
             for (int index = 0; index < allColliders.Length; index++)
             {
-                //if (activateDebug)
-                //    Handles.Label(r.transform.position + transform.up * 1.2f, r.distance.ToString());
-
                 Gizmos.DrawCube(transform.position + transform.forward * maxDistance, transform.lossyScale);
 
                 Gizmos.color = Color.blue;
